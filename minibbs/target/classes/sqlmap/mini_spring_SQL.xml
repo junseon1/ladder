@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="miniuser">
+
+	<insert id="insert" parameterType="hashMap" useGeneratedKeys="true" keyProperty="seq">
+		<![CDATA[
+		insert into miniuser
+		(userID, userName, userPassword, userGender)
+		values
+		(#{userID}, #{userName}, #{userPassword}, #{userGender})
+		]]>
+	</insert> 
+	
+	<select id="select_mypage" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+	select userID, userName, userPassword, userGender, insert_date
+	from
+	miniuser where seq = #{seq}
+	]]>
+	</select>
+	
+	
+	<select id="select_list" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+	select seq, userID, userName, userPassword, userGender, 
+	insert_date
+	from 
+	miniuser 
+	where 1 = 1	
+	]]>
+	<if test="keyword != null and keyword !=''">
+	and (userID like CONCAT('%',#{keyword},'%')or userName like CONCAT('%',#{keyword},'%') or userPassword like CONCAT('%',#{keyword},'%'))
+	</if>
+	order by insert_date desc	
+	</select>
+	
+	<update id="update" parameterType="hashMap">
+	<![CDATA[
+	update miniuser set
+	userID = #{userID},
+	userName = #{userName},
+	userPassword = #{userPassword},
+	userGender = #{userGender}
+	where
+	seq = #{seq}
+	]]>
+	</update>
+	
+	<delete id="delete" parameterType="hashMap">
+	<![CDATA[
+	delete from miniuser where seq = #{seq}
+	]]>
+	
+	</delete>
+	
+	
+	
+	
+</mapper>
